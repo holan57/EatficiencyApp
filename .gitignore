@@ -1,0 +1,4 @@
+    # 環境變數與機密檔案
+    .env
+    .streamlit/secrets.toml
+    eatficiency-project-7d35af6b6f85.json
