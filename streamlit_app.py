@@ -72,12 +72,23 @@ def analyze_with_gemini(text_content=None, image_content=None):
     今天是 {today}。
     你是一個精準的飲食記帳與健康理財助手。
     請分析使用者提供的【圖片】或【文字描述】：
-    1. 辨識或擷取【食物名稱】。
-    2. 估算【熱量】與【金額】
-    3. 給予【健康度評分】與【建議】。
-    4. 如上述第一次無法辨識，讓user手動填入資訊
-    請以 JSON 回傳：date, foodname, amount, category, calories, health_score, advice。
-    """
+    【核心任務】：
+     辨識【食物名稱】、【熱量】、【金額】、【分類】。
+     估算【健康度評分】(0-10) 與【建議】。
+     格式必須是「純 JSON」，**嚴禁**包含任何 Markdown 標記（如 ```json）、反引號或解釋性文字。
+      【JSON 格式需求】：
+      {{
+        "date": "{today}",
+        "foodname": "...",
+        "amount": 0,
+        "category": "中式",
+        "calories": 0,
+        "health_score": 0,
+        "advice": "..."
+      }}
+
+      若無法辨識任何資訊，請在 JSON 對應欄位填入 null，不要回傳錯誤訊息。
+      """
     
     try:
         contents = [base_prompt]
