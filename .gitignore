@@ -1,6 +1,5 @@
 # Secrets and Environment
 .env
-
 *.json
 
 # Python
