@@ -29,8 +29,8 @@ user_name = st.sidebar.text_input("使用者名稱", key="user_name")
 try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     MONTHLY_BUDGET = st.secrets.get("MONTHLY_BUDGET", 15000)
-except KeyError:
-    st.error("請在 Streamlit Secrets 中設定 GOOGLE_API_KEY")
+except Exception as e:
+    st.error(f"安全性設定錯誤: 找不到 GOOGLE_API_KEY。請檢查 .streamlit/secrets.toml。")
     st.stop()
 
 MODEL_NAME = 'gemini-2.5-flash-lite'
@@ -51,10 +51,11 @@ def get_expenses():
     """從 Google Sheets 讀取資料"""
     try:
         df = conn.read(ttl="0")
-        if df.empty:
+        if df is None or df.empty:
             return pd.DataFrame(columns=["user_name", "date", "foodname", "amount", "category", "calories", "health_score", "advice"])
         return df
-    except Exception:
+    except Exception as e:
+        st.error(f"無法讀取試算表資料，請檢查連線設定。錯誤訊息: {e}")
         return pd.DataFrame(columns=["user_name", "date", "foodname", "amount", "category", "calories", "health_score", "advice"])
 
 def save_to_sheets(new_data):
