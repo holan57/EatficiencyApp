@@ -105,7 +105,7 @@ with st.sidebar:
     
     current_month = datetime.now().strftime('%Y-%m')
     if not df_all.empty and 'date' in df_all.columns:
-        df_all['date'] = pd.to_datetime(df_all['date'])
+        df_all['date'] = pd.to_datetime(df_all['date'], errors='coerce')
         month_mask = df_all['date'].dt.strftime('%Y-%m') == current_month
         df_month = df_all[month_mask]
         
@@ -168,7 +168,9 @@ with tab1:
             amount = c3.number_input("金額", value=int(amount_val), step=1)
         except (ValueError, TypeError):
             amount = c3.number_input("金額", value=0, step=1)
-        category = c4.selectbox("類別", ["中式", "西式", "日式", "其他"], index=["中式", "西式", "日式", "其他"].index(res.get('category', '其他')) if res.get('category') in ["餐飲", "交通", "生活", "其他"] else 3)
+        
+        categories = ["中式", "西式", "日式", "其他"]
+        category = c4.selectbox("類別", categories, index=categories.index(res.get('category')) if res.get('category') in categories else 3)
         
         col_action1, col_action2 = st.columns(2)
         with col_action1:
